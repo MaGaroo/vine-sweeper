@@ -1,9 +1,9 @@
 module Queue #(parameter msg_bit_width = 24, parameter max_msg = 100) (read, read_en, write_ack, write, write_en, read_ack);
 	localparam max_width = 1 << msg_bit_width;
-	output reg [max_msg * msg_bit_width - 1:0] read;
+	output reg [msg_bit_width - 1:0] read;
 	output reg write_ack;
 	output reg read_en;
-	input [max_msg * msg_bit_width - 1:0] write;
+	input [msg_bit_width - 1:0] write;
 	input write_en;
 	input read_ack;
 //	input clock;
