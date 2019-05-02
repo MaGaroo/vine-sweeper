@@ -39,6 +39,7 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 	reg [7:0] ri, rj, rstatus, ti, tj, tstatus;
 	reg readytosendtouart;
 	integer rxcnt, txcnt;
+	integer rxmessagecnt;
 
 	reg [MESSAGE_WIDTH-1:0] rxmsg_fromuart, rxmsg_fromcell,  txmsg_touart, txmsg_tocell;
 
@@ -72,29 +73,15 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 			end
 		end
 
-		/*if (rxcnt == 3)
-		begin
-			if (~fromuart_writeen)
-			begin
-				writemsgfromuart <= {ri[ADDR_WIDTH:0], rj[ADDR_WIDTH:0], rstatus[3:0]};
-				fromuart_writeen <= 1'b1;
-			end
-			if (fromuart_writeack)
-			begin
-				rxcnt = 0;
-			end
-		end*/
 
-		// transmit i, j, status from Queue to UART
-		// TODO ti, tj, tstatus assignment from Queue
 		
-		
+		// Buffer To UART
 		if (fromcell_readen) 
 		begin
 			case (txcnt):
 			0:
 			begin
-				read_ack <= 1'b0;
+				fromcell_readack <= 1'b0;
 				txdata <= {readmsgfromcell[ADDR_WIDTH-1:0], (8-ADDR_WIDTH)'b0};
 				send <= 1'b1;
 				txcnt <= 1;
@@ -135,36 +122,29 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 			casez: txcat <= 0;
 		end
 		
-		if (txcnt < 3)
+		//Buffer to Cell
+		if(fromuart_readen)
 		begin
-			if (~readytosendtouart)
+			case (rxmessagecnt)
 			begin
-				if (fromcell_readen)
+				0:
 				begin
-					fromcell_readack <= 1;
-					readytosendtouart <= 1;
-					tstatus <= readmsgfromcell[3:0];
-					tj <= readmsgfromcell[ADDR_WIDTH+4:4];
-					ti <= readmsgfromcell[MESSAGE_WIDTH-1:ADDR_WIDTH+5];
+					fromuart_readack <= 1'b0;
+					rxmessage <= readmsgfromuart;
+					rxmessagecnt <= 1;
+				end
+				1:
+				begin
+					if (ack_rxmessage)
+					begin
+						fromuart_readack <= 1'b1;
+						rxmessagecnt <= 0;
+					end
 				end
 			end
 			
-			if (readytosendtouart)
-			begin
-				fromcell_readack <= 0;
-				case (txcnt)
-				begin
-					0: 	begin
-							send = 1;
-
-						end
-				end
-			end
-			else
-			begin
-					
-			end
 		end
+		
 		
 
 		// transmit MESSAGE from cell to buffer
