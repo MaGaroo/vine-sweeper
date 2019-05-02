@@ -25,7 +25,7 @@ module Receive #(parameter clockperbit = 10) (rxdata, rxfinish, rx, clock, reset
 				end
 				else if (current_bit == 9)
 				begin
-					idle <= 1'b1
+					idle <= 1'b1;
 					rxfinish <= 1'b1;
 				end
 				remaining_clocks <= clockperbit - 1'b1;
