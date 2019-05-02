@@ -21,7 +21,7 @@ module Receive #(parameter clockperbit = 10) (rxdata, rxfinish, rx, clock, reset
 				if (~current_bit[0])
 				begin
 					rxdata[current_bit] <= rx;
-					current_bit <= current_bit + 1'b1;
+					current_bit <= current_bit + 4'b1;
 				end
 				else
 					rxfinish <= 1'b1;
@@ -34,7 +34,7 @@ module Receive #(parameter clockperbit = 10) (rxdata, rxfinish, rx, clock, reset
 		begin
 			rxfinish <= 1'b0;
 			remaining_clocks <= initialclockperbit - 1'b1;
-			current_bit <= 3'b0;
+			current_bit <= 4'b0;
 		end
 	end
 
