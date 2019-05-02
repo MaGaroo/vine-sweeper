@@ -6,26 +6,30 @@ module Receive #(parameter clockperbit = 10) (rxdata, rxfinish, rx, clock, reset
 
 	integer remaining_clocks;
 	reg [0:3] current_bit;
+	reg idle;
 	
 	always @(posedge reset or posedge clock)
 	begin
 		if (reset)
 		begin
 			// TODO: What to do? :D
-			rxfinish <= 1'b1;
+			idle <= 1'b1;
 		end
-		else if (~rxfinish)
+		else if (~idle)
 		begin
 			if (remaining_clocks == 0)
 			begin
-				if (~current_bit[0])
+				if (current_bit < 8)
 				begin
 					rxdata[current_bit] <= rx;
-					current_bit <= current_bit + 4'b1;
 				end
-				else
+				else if (current_bit == 9)
+				begin
+					idle <= 1'b1
 					rxfinish <= 1'b1;
+				end
 				remaining_clocks <= clockperbit - 1'b1;
+				current_bit <= current_bit + 4'b1;
 			end
 			else
 				remaining_clocks <= remaining_clocks - 1'b1;
@@ -33,6 +37,7 @@ module Receive #(parameter clockperbit = 10) (rxdata, rxfinish, rx, clock, reset
 		else if (~rx)
 		begin
 			rxfinish <= 1'b0;
+			idle <= 1'b0;
 			remaining_clocks <= initialclockperbit - 1'b1;
 			current_bit <= 4'b0;
 		end
