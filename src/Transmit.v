@@ -8,28 +8,47 @@ module Transmit #(parameter clockperbit = 10)
 	output reg tx;
 	output reg txdone;
 	
+	reg idle;
+	
 	reg [3:0] current_bit;
-	reg [3:0] remaining_clocks;
+	integer remaining_clocks;
+	
+	initial
+	begin
+		idle <= 1'b1;
+		tx <= 1'b1;
+		txdone <= 1'b1;
+	end
 	
 	always @(posedge reset or posedge clock)
 	begin
 		if (reset)
 		begin
+			idle <= 1'b1;
+			tx <= 1'b1;
 			txdone <= 1'b1;
 		end
 		else
-			if (~txdone) 
+			if (~idle) 
 				if (remaining_clocks == 0)
 				begin
-					if (current_bit == 4'b1001)
-						txdone <= 1'b1;
+					if (current_bit == 9)
+					begin
+						idle <= 1'b1;
+						tx <= 1'b1;
+					end
 					else
 					begin
-						if (current_bit == 4'b1000) 
+						if (current_bit == 8) 
+						begin
+							txdone <= 1'b1;
 							tx <= 1'b1;
+						end
 						else
+						begin
 							tx <= txdata[current_bit];
-						current_bit <= current_bit + 1'b1;
+						end
+						current_bit <= current_bit + 1;
 						remaining_clocks <= clockperbitminus;
 					end
 				end
@@ -40,8 +59,9 @@ module Transmit #(parameter clockperbit = 10)
 				if (send) 
 				begin
 					txdone <= 1'b0;
-					current_bit = 4'b0000;
-					remaining_clocks <= remaining_clocks;
+					idle <= 1'b0;
+					current_bit <= 4'b0000;
+					remaining_clocks <= clockperbitminus;
 					tx <= 1'b0;
 				end
 	end
