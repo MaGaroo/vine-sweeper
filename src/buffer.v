@@ -16,7 +16,6 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 	reg [MESSAGE_WIDTH-1:0] readmsgfromcell, readmsgfromuart, writemsgfromcell, writemsgfromuart;
 	reg fromcell_readen, fromcell_writeen, fromcell_readack, fromcell_writeack, fromuart_readen, fromuart_writeen, fromuart_readack, fromuart_writeack;
 	
-	
 	Queue #(MESSAGE_WIDTH, 4) msgs_from_cell
 		(.read(readmsgfromcell),
 		 .read_en(fromcell_readen),
@@ -63,7 +62,7 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 			endcase
 			if (rxcnt == 2)
 			begin 
-				writemsgfromuart <= {ri[ADDR_WIDTH:0], rj[ADDR_WIDTH:0], rstatus[3:0]};
+				writemsgfromuart <= {ri[ADDR_WIDTH-1:0], 1'b0, rj[ADDR_WIDTH-1:0], 1'b0, rstatus[3:0]};
 				fromuart_writeen <= 1;
 				if (fromuart_writeack == 1'b1)
 				begin
@@ -88,6 +87,53 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 
 		// transmit i, j, status from Queue to UART
 		// TODO ti, tj, tstatus assignment from Queue
+		
+		
+		if (fromcell_readen) 
+		begin
+			case (txcnt):
+			0:
+			begin
+				read_ack <= 1'b0;
+				txdata <= {readmsgfromcell[ADDR_WIDTH-1:0], (8-ADDR_WIDTH)'b0};
+				send <= 1'b1;
+				txcnt <= 1;
+				
+			end
+			1:
+			begin 
+				if (txdone == 1'b1) 
+				begin
+					txcnt <= 2;
+				end
+			end
+			2:
+			begin
+				txdata <= {readmsgfromcell[2*ADDR_WIDTH-1:ADDR_WIDTH], (8-ADDR_WIDTH)'b0};
+				send <= 1'b1;
+				txcnt <= 3;
+			end
+			3:
+			begin
+				if (txdone == 1'b1) 
+				begin
+					txcnt <= 4;
+				end
+			end
+			4:
+			begin
+				txdata <= readmsgfromcell[MESSAGE_WIDTH-1:MESSAGE_WIDTH-4];
+				send <= 1'b1;
+				txcnt <= 5;
+			end
+			5:
+				if (txdone == 1'b1)
+				begin
+					fromcell_readack <= 1'b1;
+					txcnt <= 0;
+				end
+			casez: txcat <= 0;
+		end
 		
 		if (txcnt < 3)
 		begin

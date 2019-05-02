@@ -43,13 +43,14 @@ module Transmit #(parameter clockperbit = 10)
 						begin
 							txdone <= 1'b1;
 							tx <= 1'b1;
+							remaining_clocks <= 0;
 						end
 						else
 						begin
 							tx <= txdata[current_bit];
+							remaining_clocks <= clockperbitminus;
 						end
 						current_bit <= current_bit + 1;
-						remaining_clocks <= clockperbitminus;
 					end
 				end
 				else 
