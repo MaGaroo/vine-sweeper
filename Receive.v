@@ -1,4 +1,4 @@
-module Receive #(parameter clockperbit) (rxdata, rxfinish, rx, clock, reset);
+module Receive #(parameter clockperbit = 10) (rxdata, rxfinish, rx, clock, reset);
 	parameter initialclockperbit = clockperbit * 2 / 3;
 	input clock, reset, rx;
 	output reg rxfinish;
