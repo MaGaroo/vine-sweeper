@@ -42,7 +42,8 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 
 	reg [7:0] ri, rj, rstatus, ti, tj, tstatus;
 	reg readytosendtouart;
-	integer rxmessagecnt;
+	reg [2:0] rxmessagecnt;
+	reg [1:0] txmessagecnt;
 	reg [1:0] rxcnt;
 	reg [2:0] txcnt;
 
@@ -158,8 +159,22 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 		
 		if (txmessage[MESSAGE_WIDTH-1:MESSAGE_WIDTH-4] != 15)
 		begin
-			fromcell_writeen <= 1'b1;
-			writemsgfromcell <= txmessage;
+			case (txmessagecnt) 
+			0:
+			begin
+				ack_txmessage <= 0;
+				fromcell_writeen <= 1'b1;
+				writemsgfromcell <= txmessage;
+				txmessagecnt <= 1;
+			end
+			1:
+			begin
+				if (fromcell_writeack)
+				begin
+					ack_txmessage <= 1;
+					txmessagecnt <= 0;
+				end
+			end
 			
 		end
 		
