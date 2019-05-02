@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://quera.ir/course/assignments/9185/print -->
+<html class="gr__quera_ir"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>HardWar</title>
+    
+    <meta name="fontiran.com:license" content="LCTB2">
+    <link rel="shortcut icon" type="image/png" href="https://cdn.quera.ir/images/logo/favicon/favicon-16x16.4bcbe4f363d7.png">
+    
+
+<script type="text/javascript" async="" src="./HardWar_files/hotjar-1222646.js.download"></script><script type="text/javascript" async="" src="./HardWar_files/analytics.js.download"></script><script async="" type="text/javascript" src="./HardWar_files/rg.complete.js.download"></script><script async="" src="./HardWar_files/gtm.js.download"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TDRQP6V');</script>
+
+
+<meta name="yn-tag" id="c149392b-0daa-4fd2-afcc-7c0377328aec">
+<script>
+    !function (t, e, n) {
+            t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {
+                t[n].q.push(arguments)
+            }, t[n].q = t[n].q || [];
+            var a = new Date, r = a.getFullYear().toString() + "0" + a.getMonth() + "0" + a.getDate() + "0" + a.getHours(),
+                c = e.getElementsByTagName("script")[0], s = e.createElement("script");
+            s.async = 1, s.type = "text/javascript", s.src = "https://cdn.yektanet.com/rg_woebegone/scripts/2382/rg.complete.js?v=" + r, c.parentNode.insertBefore(s, c)
+    }(window, document, "yektanet");
+</script>
+
+
+    <script type="text/javascript" src="./HardWar_files/common.min.d02e49ecb223.js.download"></script>
+    <link rel="stylesheet" type="text/css" href="./HardWar_files/semantic.rtl.min.86a83355746a.css">
+    <link rel="stylesheet" type="text/css" href="./HardWar_files/style.19682939d81d.css">
+    <link rel="stylesheet" type="text/css" href="./HardWar_files/style.233c3f0ed3ba.css">
+    <script type="text/javascript" src="./HardWar_files/main.46012e376e61.js.download"></script>
+    <script src="./HardWar_files/prism.min.683a0944f523.js.download" data-manual=""></script><script src="./HardWar_files/clipboard.min.js.download"></script>
+    <link rel="stylesheet" type="text/css" href="./HardWar_files/prism.4fa8005e6de1.css">
+    <link rel="stylesheet" href="./HardWar_files/katex.min.56f7a8590a41.css">
+    <style>
+        @page {
+            margin: 25mm 20mm;
+        }
+
+        @media print {
+            pre, code {
+                white-space: pre-wrap; /* Since CSS 2.1 */
+                white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                white-space: -o-pre-wrap; /* Opera 7 */
+                word-wrap: break-word; /* Internet Explorer 5.5+ */
+            }
+        }
+
+        pre {
+            background-color: #dce8ec !important
+        }
+    </style>
+<script async="" src="./HardWar_files/modules.3bb30613cbd58eee46c7.js.download"></script><style type="text/css">iframe#_hjRemoteVarsFrame {display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;}</style></head>
+
+<body dir="rtl" data-gr-c-s-loaded="true">
+
+    <div class="qu-problem-segment" style="page-break-after: always">
+        <div style="display: none;" id="description_md-30677">در
+این قسمت شما باید یک ماژول دریافت‌کننده
+به شکل زیر بنویسید:
+
+
+```c
+module Receive #(parameter clockperbit)(rxdata, rxfinish, rx, clock, reset);
+
+	input clock;
+	input reset;
+	input rx;
+	output reg rxfinish;
+	output reg [7:0] rxdata;
+
+```
+پارامتر clockperbit: این
+پارامتر مشخص می‌کند هر بیت داده به
+اندازه چند کلاک دستگاه روی ورودی rx
+می‌ماند.
+مقدار
+clockperbit
+به
+کلاک دستگاه و baudrate
+بستگی
+دارد و با تغییر آن‌ها این مقدار نیز
+تغییر می‌کند.
+
+ورودیrx:ورودی
+یک بیتی است که وقتی در حالت idle
+هست
+اگر مقدار آن از ۱ به ۰ تغییر کند
+به
+منزله شروع ارسال داده از سمت فرستنده
+است.
+
+هر ماژول برای دریافت
+داده در زمانهای خاصی را می‌خواندو پس از اتمام
+دریافت داده، داده ۸ بیتی را در خروجی قرار  می‌دهداین زمان‌های
+خاص به نام sampling معروف
+هستند و وسط هر واحد زمانی قرار دارندمانند
+شکل زیر:
+![](http://s6.uplod.ir/i/00901/843ahtjx8c7z.png)
+
+خروجی rxfinish: سیگنال خروجی
+ماژول است
+که مشخص می‌کند این ماژول داده را کامل
+دریافت کرده و مقداری که در خروجی قرار
+داده معتبر است
+
+خروجی rxdata:
+داده
+۸ بیتی که از پورت rx به
+صورت سریال دریافت شد روی این خروجی قرار
+می‌گیرد
+
+ورودی reset
+وقتی
+مقدار این ورودی ۱ می‌شود دستگاه باید reset
+شودبه این معنا که اگر
+در حال خواندن داده است به حالت اولیه
+برگردد و منتظر شود مقدار rx از ۱ به صفر
+تغییر کند تا دوباره داده را از ابتدا
+بخواند.
+
+\**طراحی با استفاده از بلوک initial و for در این تمرین غلط است و نمره‌ای نمی‌گیرد. همچنین استفاده از تاخیر و فراخوانی سیستمی time نیز طراحی صحیحی نیست و نمره‌ای نمی‌گیرد.**
+
+راهنمایی: در طراحی ماژول خود از یک counter استفاده کنید. به این شکل که تعداد poseedge های کلاک ورودی را بشمارید و هر گاه به وسط بازه زمانی مربوط به یک بیت رسیدید یبیت مربوط به آن را بخوانید.</div>
+<div>
+    <div class="ui center aligned fluid container">
+        <h1>ماژول گیرنده برای UART</h1>
+    </div>
+    <br>
+    <div class="description-html" id="description_html-30677"><p dir="auto">در
+این قسمت شما باید یک ماژول دریافت‌کننده
+به شکل زیر بنویسید:</p>
+<div class="code-toolbar"><pre dir="ltr" class=" line-numbers language-c"><code class=" language-c">module Receive #<span class="token punctuation">(</span>parameter clockperbit<span class="token punctuation">)</span><span class="token punctuation">(</span>rxdata<span class="token punctuation">,</span> rxfinish<span class="token punctuation">,</span> rx<span class="token punctuation">,</span> clock<span class="token punctuation">,</span> reset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    input clock<span class="token punctuation">;</span>
+    input reset<span class="token punctuation">;</span>
+    input rx<span class="token punctuation">;</span>
+    output reg rxfinish<span class="token punctuation">;</span>
+    output reg <span class="token punctuation">[</span><span class="token number">7</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">]</span> rxdata<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><div class="toolbar"><div class="toolbar-item"><span>C</span></div><div class="toolbar-item"><a>Copy</a></div></div></div>
+<p dir="auto">پارامتر clockperbit: این
+پارامتر مشخص می‌کند هر بیت داده به
+اندازه چند کلاک دستگاه روی ورودی rx
+می‌ماند.
+مقدار
+clockperbit
+به
+کلاک دستگاه و baudrate
+بستگی
+دارد و با تغییر آن‌ها این مقدار نیز
+تغییر می‌کند.</p>
+<p dir="auto">ورودیrx:ورودی
+یک بیتی است که وقتی در حالت idle
+هست
+اگر مقدار آن از ۱ به ۰ تغییر کند
+به
+منزله شروع ارسال داده از سمت فرستنده
+است.</p>
+<p dir="auto">هر ماژول برای دریافت
+داده در زمانهای خاصی را می‌خواندو پس از اتمام
+دریافت داده، داده ۸ بیتی را در خروجی قرار  می‌دهداین زمان‌های
+خاص به نام sampling معروف
+هستند و وسط هر واحد زمانی قرار دارندمانند
+شکل زیر:
+<img src="./HardWar_files/843ahtjx8c7z.png" alt=""></p>
+<p dir="auto">خروجی rxfinish: سیگنال خروجی
+ماژول است
+که مشخص می‌کند این ماژول داده را کامل
+دریافت کرده و مقداری که در خروجی قرار
+داده معتبر است</p>
+<p dir="auto">خروجی rxdata:
+داده
+۸ بیتی که از پورت rx به
+صورت سریال دریافت شد روی این خروجی قرار
+می‌گیرد</p>
+<p dir="auto">ورودی reset
+وقتی
+مقدار این ورودی ۱ می‌شود دستگاه باید reset
+شودبه این معنا که اگر
+در حال خواندن داده است به حالت اولیه
+برگردد و منتظر شود مقدار rx از ۱ به صفر
+تغییر کند تا دوباره داده را از ابتدا
+بخواند.</p>
+<p dir="auto">*<em>طراحی با استفاده از بلوک initial و for در این تمرین غلط است و نمره‌ای نمی‌گیرد. همچنین استفاده از تاخیر و فراخوانی سیستمی time نیز طراحی صحیحی نیست و نمره‌ای نمی‌گیرد.*</em></p>
+<p dir="auto">راهنمایی: در طراحی ماژول خود از یک counter استفاده کنید. به این شکل که تعداد poseedge های کلاک ورودی را بشمارید و هر گاه به وسط بازه زمانی مربوط به یک بیت رسیدید یبیت مربوط به آن را بخوانید.</p>
+</div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        render_problem_text('description_md-30677', 'description_html-30677');
+    });
+</script>
+    </div>
+
+    <div class="qu-problem-segment" style="page-break-after: always">
+        <div style="display: none;" id="description_md-30678">ماژول
+فرستنده را به شکل زیر طراحی کنید:
+
+```c
+module Transmit#(parameter clockperbit)
+(txdata, txdone, send, tx, reset, clock);
+input reset;
+input clock;
+input [7:0] txdata;
+input send;
+output reg tx;
+output reg txdone;
+
+```
+
+پارامتر clockperbit: این
+پارامتر مشخص می‌کند هر بیت داده به
+اندازه چند کلاک دستگاه باید روی خروجی
+tx
+بماند.
+مقدار
+clockperbit
+به
+کلاک دستگاه و baudrate
+بستگی
+دارد و با تغییر آن‌ها این مقدار نیز
+تغییر می‌کند.
+
+ورودی txdata:
+داده‌ای
+که قرار است فرستاده شود.
+
+خروجی tx:
+روی
+این سیم در حالت idle
+مقدار
+۱ قرار دارد و اگر بخواهیم داده‌ای را
+ارسال کنیم ابتدا آن را برای یک واحد زمانی
+۰ می‌کنیم سپس داده را یک بیت یک بیت ارسال
+می‌کنیم.
+و
+در انتها به اندازه یک واحد زمانی tx
+را
+۱ قرار می‌دهیم.
+
+خروجی txdone:
+این
+سیگنال خروجی مشخص می‌کند که دستگاه
+ارسال داده را تمام کرده و آماده است که
+داده بعدی را ارسال کند.
+مقدار
+txdone
+تا
+وقتی دستگاه شروع به ارسال داده بعدی نکرده ۱
+می‌ماند.
+
+ورودی send:
+وقتی
+این سیگنال ورودی ۱ می‌شود دستگاه باید
+شروع به ارسال داده کند.
+
+ورودی reset:
+وقتی
+مقدار این ورودی ۱ می‌شود دستگاه باید  reset
+شود به این معنا که به حالت اولیه برود و منتطر بماند تا سیگنال send یک شود تا داده بعدی را ارسال کند.
+
+\**طراحی با استفاده از بلوک initial و for در این تمرین غلط است و نمره‌ای نمی‌گیرد. همچنین استفاده از تاخیر و فراخوانی سیستمی time نیز طراحی صحیحی نیست و نمره‌ای نمی‌گیرد.**
+
+راهنمایی: در طراحی ماژول خود از یک counter استفاده کنید. به این شکل که تعداد poseedge های کلاک ورودی را بشمارید و هر گاه به اندازه‌ی پارامتر ورودی clockperbit شد داده بعدی را ارسال کند.</div>
+<div>
+    <div class="ui center aligned fluid container">
+        <h1>ماژول فرستنده برای UART</h1>
+    </div>
+    <br>
+    <div class="description-html" id="description_html-30678"><p dir="auto">ماژول
+فرستنده را به شکل زیر طراحی کنید:</p>
+<div class="code-toolbar"><pre dir="ltr" class=" line-numbers language-c"><code class=" language-c">module Transmit#<span class="token punctuation">(</span>parameter clockperbit<span class="token punctuation">)</span>
+<span class="token punctuation">(</span>txdata<span class="token punctuation">,</span> txdone<span class="token punctuation">,</span> send<span class="token punctuation">,</span> tx<span class="token punctuation">,</span> reset<span class="token punctuation">,</span> clock<span class="token punctuation">)</span><span class="token punctuation">;</span>
+input reset<span class="token punctuation">;</span>
+input clock<span class="token punctuation">;</span>
+input <span class="token punctuation">[</span><span class="token number">7</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">]</span> txdata<span class="token punctuation">;</span>
+input send<span class="token punctuation">;</span>
+output reg tx<span class="token punctuation">;</span>
+output reg txdone<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><div class="toolbar"><div class="toolbar-item"><span>C</span></div><div class="toolbar-item"><a>Copy</a></div></div></div>
+<p dir="auto">پارامتر clockperbit: این
+پارامتر مشخص می‌کند هر بیت داده به
+اندازه چند کلاک دستگاه باید روی خروجی
+tx
+بماند.
+مقدار
+clockperbit
+به
+کلاک دستگاه و baudrate
+بستگی
+دارد و با تغییر آن‌ها این مقدار نیز
+تغییر می‌کند.</p>
+<p dir="auto">ورودی txdata:
+داده‌ای
+که قرار است فرستاده شود.</p>
+<p dir="auto">خروجی tx:
+روی
+این سیم در حالت idle
+مقدار
+۱ قرار دارد و اگر بخواهیم داده‌ای را
+ارسال کنیم ابتدا آن را برای یک واحد زمانی
+۰ می‌کنیم سپس داده را یک بیت یک بیت ارسال
+می‌کنیم.
+و
+در انتها به اندازه یک واحد زمانی tx
+را
+۱ قرار می‌دهیم.</p>
+<p dir="auto">خروجی txdone:
+این
+سیگنال خروجی مشخص می‌کند که دستگاه
+ارسال داده را تمام کرده و آماده است که
+داده بعدی را ارسال کند.
+مقدار
+txdone
+تا
+وقتی دستگاه شروع به ارسال داده بعدی نکرده ۱
+می‌ماند.</p>
+<p dir="auto">ورودی send:
+وقتی
+این سیگنال ورودی ۱ می‌شود دستگاه باید
+شروع به ارسال داده کند.</p>
+<p dir="auto">ورودی reset:
+وقتی
+مقدار این ورودی ۱ می‌شود دستگاه باید  reset
+شود به این معنا که به حالت اولیه برود و منتطر بماند تا سیگنال send یک شود تا داده بعدی را ارسال کند.</p>
+<p dir="auto">*<em>طراحی با استفاده از بلوک initial و for در این تمرین غلط است و نمره‌ای نمی‌گیرد. همچنین استفاده از تاخیر و فراخوانی سیستمی time نیز طراحی صحیحی نیست و نمره‌ای نمی‌گیرد.*</em></p>
+<p dir="auto">راهنمایی: در طراحی ماژول خود از یک counter استفاده کنید. به این شکل که تعداد poseedge های کلاک ورودی را بشمارید و هر گاه به اندازه‌ی پارامتر ورودی clockperbit شد داده بعدی را ارسال کند.</p>
+</div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        render_problem_text('description_md-30678', 'description_html-30678');
+    });
+</script>
+    </div>
+
+    <div class="qu-problem-segment" style="page-break-after: always">
+        <div style="display: none;" id="description_md-30679">## یوآرت چیست؟
+
+یوآرت(universal asynchronous receiver-transmitter) یک سخت‌افزار برای ارتباط ناهمگن **سریال** است که در آن سرعت و فرمت ارسال داده قابل تنظیم است.
+هر دستگاه UART یک پورت ورودی rx برای دریافت داده و یک پورت خروجی tx برای ارسال داده  دارد.
+هر دستگاه UART یک بایت داده را دریافت می‌کند و تک تک بیت‌های آن را به صورت سریال با پروتکل مشخصی روی  پورت tx ارسال می‌کنددستگاه دیگری در مقصد می‌تواند از پورت rx این بیت‌ها را دریافت کند و آن را دوباره به یک بایت داده تبدیل کند.
+فرم کلی دریافت و ارسال داده در ماژول UART به شکل زیر است:
+![](http://s6.uplod.ir/i/00901/rf2w0shkm40u.png)
+
+در حالت idle (زمانی که هیچ داده‌ای در حال فرستادن نیست) خروجی ۱ است. زمانی که می‌خواهیم شروع به ارسال داده کنیم،‌ به اندازه یک واحد زمانی خروجی را صفر میکنیم (start bit) و سپس بیت‌های داده را (۵ تا ۹ بیت که تعداد آن از قبل مشخص و قرارداد شده است) یکی یکی ارسال میکنیم. هر بیت به اندازه یک واحد زمانی روی سیم می‌ماند و سپس بیت بعدی ارسال می شود. بعد از اتمام بیت‌های داده،‌ خروجی را برای ۱ ،۱/۵ یا ۲ واحد زمانی یک نگه‌می‌داریم(stop bit). طول stop bit نیز قرارداد شده و از قبل مشخص است.
+
+## مفهوم baud rate و  واحد زمانی:
+نرخ ارسال داده یا baud rate به تعداد بیتی می‌گویند که در یک ثانیه منتقل می‌شود.
+واحد زمانی یا clock per bit به تعداد کلاکی می‌گویند که یک بیت روی سیم انتقال می‌ماند.
+برای مثال اگر کلاک یک سیستم 9.6MHz باشد و baud rate برابر ۹۶۰۰ باشد، هر بیت باید به اندازه ۱۰۰۰ کلاک روی سیم بماندبنابراین هر واحد زمانی در این سیستم با این نرخ ارسال داده ۱۰۰۰ کلاک است.
+
+## پیاده سازی
+طول داده در این پروتکل می‌تواند بین ۵ تا ۹ بیت باشد. اما باید از پیش مشخص باشد و بین دو دستگاه قرارداد شود. همچنین می‌تواند شامل بیت parity باشد یا نباشد. در این تمرین ما از شما می‌خواهیم که یک UART طراحی کنید که  در هر ارسال یا دریافت، ۸ بیت داده بدون parity انتقال دهد. همچنین باید قابلیت ارسال و دریافت همزمان داده را داشته باشد. 
+تعداد stop bit ها نیز می‌تواند متفاوت باشد ولی مانند طول داده باید از قبل مشخص و قرارداد شده باشد. در این  تمرین تعداد stop bit را ۱ در نظر می‌گیریم.
+برای پیاده‌سازی این ماژول ابتدا باید دو ماژول فرستنده و گیرنده( سؤال ۲ و ۳ این تمرین) را پیاده‌سازی کنید. سپس با کمک این دو ماژول، ماژول UART را پیاده‌سازی کنید.(بنابراین، پس از مطالعه مطالب بالا، ابتدا سؤال ۲ و ۳ را حل کنید و سپس سراغ این سؤال  بیایید.)
+
+\**طراحی با استفاده از بلوک initial و for در این تمرین غلط است و نمره‌ای نمی‌گیرد. همچنین استفاده از تاخیر و فراخوانی سیستمی time نیز طراحی صحیحی نیست و نمره‌ای نمی‌گیرد.**
+
+----------
+
+## ماژول UART
+ماژول UART را به شکل زیر طراحی کنید:
+
+
+```c
+module UART #(parameter clkperbit)
+(rx, send, clock, reset, tx, txdata, rxdata, rxfinish, txdone);
+input rx , clock, reset, send;
+output tx, rxfinish, txdone;
+output[7:0] rxdata;
+input[7:0] txdata;
+```
+
+پارامتر clockperbit: این
+پارامتر مشخص می‌کند هر بیت داده چند
+کلاک باید روی سیم بماند.
+
+ورودی txdata:
+داده‌ای
+که می‌خواهیم ارسال کنیم.
+
+خروجی rxdata:
+داده‌ی
+۸ بیتی که از طریق پورت rx
+دریافت
+شده.
+
+ورودی reset:
+با
+یک شدن این سیگنال دستگاه باید به حالت 
+اولیه برگردد و از ابتدا ارسال یا دریافت
+داده را انجام دهد.
+
+ورودی rx:
+پورت
+ورودی سریال
+
+خروجی tx:
+پورت
+خروجی سریال که از طریق آن داده‌ها را
+می‌فرستیم.
+
+ورودی send:
+با
+یک شدن این سیگنال باید داده‌ای که در
+txdata
+قرار
+دارد از طریق پورت سریال tx
+فرستاده
+شود.
+
+خروجی rxfinish:
+مشخص
+می‌کند که دریافت داده از پورت rx
+به
+انتها رسیده.
+
+خروجی txdone:
+در
+صورتی که ۰ باشد به این معنی است که دستگاه
+در حال فرستادن داده است.
+و
+اگر ۱ باشد به این معنی است که ارسال داده
+پایان یافته و دستگاه آماده است که داده
+بعدی را ارسال کند.</div>
+<div>
+    <div class="ui center aligned fluid container">
+        <h1>UART کامل</h1>
+    </div>
+    <br>
+    <div class="description-html" id="description_html-30679"><h2 dir="auto">یوآرت چیست؟</h2>
+<p dir="auto">یوآرت(universal asynchronous receiver-transmitter) یک سخت‌افزار برای ارتباط ناهمگن <strong>سریال</strong> است که در آن سرعت و فرمت ارسال داده قابل تنظیم است.
+هر دستگاه UART یک پورت ورودی rx برای دریافت داده و یک پورت خروجی tx برای ارسال داده  دارد.
+هر دستگاه UART یک بایت داده را دریافت می‌کند و تک تک بیت‌های آن را به صورت سریال با پروتکل مشخصی روی  پورت tx ارسال می‌کنددستگاه دیگری در مقصد می‌تواند از پورت rx این بیت‌ها را دریافت کند و آن را دوباره به یک بایت داده تبدیل کند.
+فرم کلی دریافت و ارسال داده در ماژول UART به شکل زیر است:
+<img src="./HardWar_files/rf2w0shkm40u.png" alt=""></p>
+<p dir="auto">در حالت idle (زمانی که هیچ داده‌ای در حال فرستادن نیست) خروجی ۱ است. زمانی که می‌خواهیم شروع به ارسال داده کنیم،‌ به اندازه یک واحد زمانی خروجی را صفر میکنیم (start bit) و سپس بیت‌های داده را (۵ تا ۹ بیت که تعداد آن از قبل مشخص و قرارداد شده است) یکی یکی ارسال میکنیم. هر بیت به اندازه یک واحد زمانی روی سیم می‌ماند و سپس بیت بعدی ارسال می شود. بعد از اتمام بیت‌های داده،‌ خروجی را برای ۱ ،۱/۵ یا ۲ واحد زمانی یک نگه‌می‌داریم(stop bit). طول stop bit نیز قرارداد شده و از قبل مشخص است.</p>
+<h2 dir="auto">مفهوم baud rate و  واحد زمانی:</h2>
+<p dir="auto">نرخ ارسال داده یا baud rate به تعداد بیتی می‌گویند که در یک ثانیه منتقل می‌شود.
+واحد زمانی یا clock per bit به تعداد کلاکی می‌گویند که یک بیت روی سیم انتقال می‌ماند.
+برای مثال اگر کلاک یک سیستم 9.6MHz باشد و baud rate برابر ۹۶۰۰ باشد، هر بیت باید به اندازه ۱۰۰۰ کلاک روی سیم بماندبنابراین هر واحد زمانی در این سیستم با این نرخ ارسال داده ۱۰۰۰ کلاک است.</p>
+<h2 dir="auto">پیاده سازی</h2>
+<p dir="auto">طول داده در این پروتکل می‌تواند بین ۵ تا ۹ بیت باشد. اما باید از پیش مشخص باشد و بین دو دستگاه قرارداد شود. همچنین می‌تواند شامل بیت parity باشد یا نباشد. در این تمرین ما از شما می‌خواهیم که یک UART طراحی کنید که  در هر ارسال یا دریافت، ۸ بیت داده بدون parity انتقال دهد. همچنین باید قابلیت ارسال و دریافت همزمان داده را داشته باشد. 
+تعداد stop bit ها نیز می‌تواند متفاوت باشد ولی مانند طول داده باید از قبل مشخص و قرارداد شده باشد. در این  تمرین تعداد stop bit را ۱ در نظر می‌گیریم.
+برای پیاده‌سازی این ماژول ابتدا باید دو ماژول فرستنده و گیرنده( سؤال ۲ و ۳ این تمرین) را پیاده‌سازی کنید. سپس با کمک این دو ماژول، ماژول UART را پیاده‌سازی کنید.(بنابراین، پس از مطالعه مطالب بالا، ابتدا سؤال ۲ و ۳ را حل کنید و سپس سراغ این سؤال  بیایید.)</p>
+<p dir="auto">*<em>طراحی با استفاده از بلوک initial و for در این تمرین غلط است و نمره‌ای نمی‌گیرد. همچنین استفاده از تاخیر و فراخوانی سیستمی time نیز طراحی صحیحی نیست و نمره‌ای نمی‌گیرد.*</em></p>
+<hr dir="auto">
+<h2 dir="auto">ماژول UART</h2>
+<p dir="auto">ماژول UART را به شکل زیر طراحی کنید:</p>
+<div class="code-toolbar"><pre dir="ltr" class=" line-numbers language-c"><code class=" language-c">module UART #<span class="token punctuation">(</span>parameter clkperbit<span class="token punctuation">)</span>
+<span class="token punctuation">(</span>rx<span class="token punctuation">,</span> send<span class="token punctuation">,</span> clock<span class="token punctuation">,</span> reset<span class="token punctuation">,</span> tx<span class="token punctuation">,</span> txdata<span class="token punctuation">,</span> rxdata<span class="token punctuation">,</span> rxfinish<span class="token punctuation">,</span> txdone<span class="token punctuation">)</span><span class="token punctuation">;</span>
+input rx <span class="token punctuation">,</span> clock<span class="token punctuation">,</span> reset<span class="token punctuation">,</span> send<span class="token punctuation">;</span>
+output tx<span class="token punctuation">,</span> rxfinish<span class="token punctuation">,</span> txdone<span class="token punctuation">;</span>
+output<span class="token punctuation">[</span><span class="token number">7</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">]</span> rxdata<span class="token punctuation">;</span>
+input<span class="token punctuation">[</span><span class="token number">7</span><span class="token operator">:</span><span class="token number">0</span><span class="token punctuation">]</span> txdata<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><div class="toolbar"><div class="toolbar-item"><span>C</span></div><div class="toolbar-item"><a>Copy</a></div></div></div>
+<p dir="auto">پارامتر clockperbit: این
+پارامتر مشخص می‌کند هر بیت داده چند
+کلاک باید روی سیم بماند.</p>
+<p dir="auto">ورودی txdata:
+داده‌ای
+که می‌خواهیم ارسال کنیم.</p>
+<p dir="auto">خروجی rxdata:
+داده‌ی
+۸ بیتی که از طریق پورت rx
+دریافت
+شده.</p>
+<p dir="auto">ورودی reset:
+با
+یک شدن این سیگنال دستگاه باید به حالت 
+اولیه برگردد و از ابتدا ارسال یا دریافت
+داده را انجام دهد.</p>
+<p dir="auto">ورودی rx:
+پورت
+ورودی سریال</p>
+<p dir="auto">خروجی tx:
+پورت
+خروجی سریال که از طریق آن داده‌ها را
+می‌فرستیم.</p>
+<p dir="auto">ورودی send:
+با
+یک شدن این سیگنال باید داده‌ای که در
+txdata
+قرار
+دارد از طریق پورت سریال tx
+فرستاده
+شود.</p>
+<p dir="auto">خروجی rxfinish:
+مشخص
+می‌کند که دریافت داده از پورت rx
+به
+انتها رسیده.</p>
+<p dir="auto">خروجی txdone:
+در
+صورتی که ۰ باشد به این معنی است که دستگاه
+در حال فرستادن داده است.
+و
+اگر ۱ باشد به این معنی است که ارسال داده
+پایان یافته و دستگاه آماده است که داده
+بعدی را ارسال کند.</p>
+</div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        render_problem_text('description_md-30679', 'description_html-30679');
+    });
+</script>
+    </div>
+
+    <div class="qu-problem-segment" style="page-break-after: always">
+        <div style="display: none;" id="description_md-30669"></div>
+<div>
+    <div class="ui center aligned fluid container">
+        <h1>سلول</h1>
+    </div>
+    <br>
+    <div class="description-html" id="description_html-30669"></div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        render_problem_text('description_md-30669', 'description_html-30669');
+    });
+</script>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // open all <details> tags
+        $('details').attr('open', '');
+        // print!
+        window.print();
+    });
+</script>
+<iframe name="_hjRemoteVarsFrame" title="_hjRemoteVarsFrame" id="_hjRemoteVarsFrame" src="./HardWar_files/box-90f3a29ef7448451db5af955688970d7.html" style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"></iframe><div id="ads"></div></body><span class="gr__tooltip"><span class="gr__tooltip-content"></span><i class="gr__tooltip-logo"></i><span class="gr__triangle"></span></span></html>
