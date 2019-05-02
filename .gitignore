@@ -1,2 +1,15 @@
 db/**
 **.qs*
+**.bak*
+**.pin*
+**.map*
+**.tan*
+**.flow*
+**.fit*
+**.done*
+**.asm*
+**.sof*
+**.qpf*
+**.pof*
+incremental_db/**
+incremental_db
