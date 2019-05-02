@@ -58,4 +58,3 @@ module Receive #(parameter clockperbit = 10) (rxdata, rxfinish, rx, clock, reset
 	end
 
 endmodule
-
