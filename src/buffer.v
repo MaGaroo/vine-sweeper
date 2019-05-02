@@ -11,10 +11,36 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 	input ack_rxmessage;
 	output reg ack_txmessage;
 	input clk;
+	
+	// Queue variables
+	reg [MESSAGE_WIDTH-1:0] readmsgfromcell, readmsgfromuart, writemsgfromcell, writemsgfromuart;
+	reg fromcell_readen, fromcell_writeen, fromcell_readack, fromcell_writeack, fromuart_readen, fromuart_writeen, fromuart_readack, fromuart_writeack;
+	
+	
+	Queue #(MESSAGE_WIDTH, 4) msgs_from_cell
+		(.read(readmsgfromcell),
+		 .read_en(fromcell_readen),
+		 .read_ack(fromcell_readack),
+		 .write(writemsgfromcell),
+		 .write_en(fromcell_writeen),
+		 .write_ack(fromcell_writeack),
+		 .clock(clk)
+		);
+
+	Queue #(MESSAGE_WIDTH, 4) msgs_from_uart
+		(.read(readmsgfromuart),
+		 .read_en(fromuart_readen),
+		 .read_ack(fromuart_readack),
+		 .write(writemsgfromuart),
+		 .write_en(fromuart_writeen),
+		 .write_ack(fromuart_writeack),
+		 .clock(clk)
+		);
+
 	reg [7:0] ri, rj, rstatus, ti, tj, tstatus;
 	integer rxcnt;
 
-	reg [MESSAGE_WIDTH-1:0] recieved_message, message_totransmit;
+	reg [MESSAGE_WIDTH-1:0] rxmsg_fromuart, rxmsg_fromcell,  txmsg_touart, txmsg_tocell;
 
 	initial begin
 		rxcnt = 0;
@@ -23,6 +49,7 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 
 	always @(posedge clk)
 	begin
+
 		// receive i, j, status from UART
 		if (rxfinish)
 		begin
@@ -45,7 +72,7 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 		// transmit MESSAGE from cell to buffer
 		if (ack_txmessage)
 		begin
-			//push txmessage to Queue
+			// TODO push txmessage to Queue
 			ack_txmessage <= 0;
 		end
 		else
@@ -54,7 +81,7 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 		// cell receives MESSAGE from buffer
 		if (~ack_rxmessage)
 		begin
-			//pop message from Queue to send it 
+			// TODO pop message from Queue to send it 
 		end
 
 		
