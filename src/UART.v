@@ -23,4 +23,3 @@ module UART #(parameter clkperbit = 10)
 		);
 
 endmodule
-

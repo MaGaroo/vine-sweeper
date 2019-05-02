@@ -11,14 +11,14 @@ module Transmit #(parameter clockperbit = 10)
 	reg [3:0] current_bit;
 	reg [3:0] remaining_clocks;
 	
-	reg idle;
-	
 	always @(posedge reset or posedge clock)
 	begin
 		if (reset)
-			idle <= 1'b1;
+		begin
+			txdone <= 1'b1;
+		end
 		else
-			if (~idle) 
+			if (~txdone) 
 				if (remaining_clocks == 0)
 				begin
 					if (current_bit == 4'b1001)
@@ -39,7 +39,6 @@ module Transmit #(parameter clockperbit = 10)
 			else 
 				if (send) 
 				begin
-					idle <= 1'b0;
 					txdone <= 1'b0;
 					current_bit = 4'b0000;
 					remaining_clocks <= remaining_clocks;
