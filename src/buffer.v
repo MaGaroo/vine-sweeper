@@ -146,21 +146,14 @@ module Buffer #(parameter N = 16, ADDR_WIDTH = 4, BUFFER_SIZE = 4)
 		end
 		
 		
-
-		// transmit MESSAGE from cell to buffer
-		if (ack_txmessage)
+		if (txmessage[MESSAGE_WIDTH-1:MESSAGE_WIDTH-4] != 15)
 		begin
-			// TODO push txmessage to Queue
-			ack_txmessage <= 0;
+			fromcell_writeen <= 1'b1;
+			writemsgfromcell <= txmessage;
+			
 		end
-		else
-			ack_txmessage <= 1;
-
-		// cell receives MESSAGE from buffer
-		if (~ack_rxmessage)
-		begin
-			// TODO pop message from Queue to send it 
-		end
+		
+		
 
 		
 
