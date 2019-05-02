@@ -1,4 +1,4 @@
-module Transmit #(parameter clockperbit)
+module Transmit #(parameter clockperbit = 10)
 (txdata, txdone, send, tx, reset, clock);
 
 	parameter clockperbitminus = clockperbit - 1;
@@ -22,7 +22,7 @@ module Transmit #(parameter clockperbit)
 				if (remaining_clocks == 0)
 				begin
 					if (current_bit == 4'b1001)
-						txdone <= 1b'1;
+						txdone <= 1'b1;
 					else
 					begin
 						if (current_bit == 4'b1000) 
@@ -42,7 +42,7 @@ module Transmit #(parameter clockperbit)
 					idle <= 1'b0;
 					txdone <= 1'b0;
 					current_bit = 4'b0000;
-					remaining_clocks <= remaining_clocks
+					remaining_clocks <= remaining_clocks;
 					tx <= 1'b0;
 				end
 	end
